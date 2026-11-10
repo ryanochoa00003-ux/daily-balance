@@ -1,0 +1,24 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:      # adds a "Run workflow" button
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build APK with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          command: buildozer android debug
+          buildozer_version: stable
+
+      - name: Save the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: DailyBalance-apk
+          path: bin/*.apk
